@@ -24,7 +24,51 @@ static const char *TAG = "lab01";
 #define HUB_CLR GRAY
 
 // TODO: Finish car part constants
+#define CAR_W 60
+#define CAR_H 32
 
+#define BODY_X0 0
+#define BODY_Y0 12
+#define BODY_X1 59
+#define BODY_Y1 24
+
+#define TOP_X0 1
+#define TOP_Y0 0
+#define TOP_X1 39
+#define TOP_Y1 11
+
+#define WINB_X0 3
+#define WINB_Y0 1
+#define WINB_X1 18
+#define WINB_Y1 8
+
+#define WINR 	2
+
+#define WINF_X0 21
+#define WINF_Y0 1
+#define WINF_X1 37
+#define WINF_Y1 8
+
+#define TIREB_X 11
+#define TIREB_Y 24
+
+#define TIRER 	7
+
+#define TIRERF_X 48
+#define TIRERF_Y 24
+
+#define HUBB_X 11
+#define HUBB_Y 24
+
+#define HUBR 4
+
+#define HUBF_X 48
+#define HUBF_Y 24
+
+#define HOOD_X0 40
+#define HOOD_X1 59
+#define HOOD_Y0 9
+#define HOOD_Y1 11
 /**
  * @brief Draw a car at the specified location.
  * @param x      Top left corner X coordinate.
@@ -34,6 +78,17 @@ static const char *TAG = "lab01";
 void drawCar(coord_t x, coord_t y)
 {
 	// TODO: Implement car procedurally with lcd geometric primitives.
+	lcd_fillRect2(TOP_X0 + x, TOP_Y0 + y, TOP_X1 + x, TOP_Y1 + y, CAR_CLR); // Car top body
+	lcd_fillRect2(BODY_X0 + x, BODY_Y0 + y, BODY_X1 + x, BODY_Y1 + y, CAR_CLR); //Car body
+	lcd_fillRoundRect2(WINB_X0 + x, WINB_Y0 + y, WINB_X1 + x, WINB_Y1 + y, WINR, WINDOW_CLR); //Back window
+	lcd_fillRoundRect2(WINF_X0 + x, WINF_Y0 + y, WINF_X1 + x, WINF_Y1 + y, WINR, WINDOW_CLR); //Front window
+	lcd_fillCircle(TIREB_X + x, TIREB_Y + y, TIRER, TIRE_CLR); //back tire tread
+	lcd_fillCircle(HUBB_X + x, HUBB_Y + y, HUBR, HUB_CLR); //back hub cap
+	lcd_fillCircle(TIRERF_X + x, TIRERF_Y + y, TIRER, TIRE_CLR); //front tire tread
+	lcd_fillCircle(HUBF_X + x, HUBF_Y + y, HUBR, HUB_CLR); //front hub cap
+	lcd_fillTriangle(HOOD_X0 + x, HOOD_Y0 + y, HOOD_X0 + x, HOOD_Y1 + y, HOOD_X1 + x, HOOD_Y1 + y, CAR_CLR); // Car hood
+	
+
 }
 
 //----------------------------------------------------------------------------//
@@ -68,11 +123,26 @@ void app_main(void)
 	lcd_setFontSize(FONT_SIZE);
 	lcd_drawString(0, 0, "Hello World! (lcd)", TITLE_CLR);
 	printf("Hello World! (terminal)\n");
+	
 	DELAY_MS(WAIT);
 
 	// TODO: Exercise 1 - Draw car in one location.
-
+	lcd_fillScreen(BACKGROUND_CLR);
+	lcd_drawString(0,0, "Exercise 1", TITLE_CLR);
+	drawCar(OBJ_X, OBJ_Y);
+	DELAY_MS(WAIT);
 	// TODO: Exercise 2 - Draw moving car (Method 1), one pass across display.
+	char str[8];
+	for (coord_t x = -CAR_W; x <= LCD_W; x += OBJ_MOVE)
+	{
+		lcd_fillScreen(BACKGROUND_CLR);
+		lcd_drawString(0,0, "Exercise 2", TITLE_CLR);
+		drawCar(x, OBJ_Y);
+		sprintf(str, "%3ld", x);
+		lcd_drawString(0, LCD_H - FONT_H, str , STATUS_CLR);
+	}
+	
+	
 	// Clear the entire display and redraw all objects each iteration.
 	// Use a loop and increment x by OBJ_MOVE each iteration.
 	// Start x off screen (negative coordinate).
