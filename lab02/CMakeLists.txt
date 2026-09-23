@@ -1,6 +1,6 @@
 # Do not change the order of these commands
 cmake_minimum_required(VERSION 3.16)
-set(EXTRA_COMPONENT_DIRS ../components)
+set(EXTRA_COMPONENT_DIRS ../components/config ../components/lcd)
 set(COMPONENTS main)
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
